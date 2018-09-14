@@ -1,15 +1,8 @@
 
 print('hi')
 
-
-a = [[3,2,5,1,3],[2,2,1,2,3]]
-b = [[3,2,2,1,3],[2,2,1,3,3]]
-
-
-sightleft = [0] * 5
-sightright = [0] * 5
-sighttop = [0] * 5
-sightbottom = [0] * 5
+a = [[1,2,3,3,3],[4,3,2,2,1]]
+b = [[1,2,2,2,5],[3,4,2,2,1]]
 
 rowcontents = []
 columncontents = []
@@ -60,9 +53,6 @@ print(c)
 		# columncontents[i][5] = 0
 		
 def checkValid(row, col):
-	if row == 4:
-		if col == 0:
-			exit()
 	seenleft = 1
 	seenright = 1
 	seentop = 1
@@ -83,25 +73,27 @@ def checkValid(row, col):
 		
 	if seentop > b[0][col]:
 		return False
+	
+	if row == 4:
+		highTB = c[row][col]
+		for i in range(row-1, -1, -1):	
+			if c[i][col] > highTB:
+				highTB = c[i][col]
+				seenbottom += 1
 		
-	highest = c[row][4]
-	highset = c[4][col]
-	for i in range(4, -1, -1):
-		if c[row][i] > highLR:
-			highLR = c[row][i]
-			seenright += 1
-			print("SEEN")
-			print(seenright)
+		if seenbottom != b[1][col]:
+			return False
+			
+	if col == 4:
+		highLR = c[row][col]
 		
-		if c[i][col] > highTB:
-			highTB = c[i][col]
-			seenbottom += 1
-
-	if seenright > a[1][row]:
-		return False
+		for i in range(col-1, -1, -1):
+			if c[row][i] > highLR:
+				highLR = c[row][i]
+				seenright += 1
 		
-	if seenbottom > b[1][col]:
-		return False
+		if seenright != a[1][row]:
+			return False
 	
 	return True
 		
@@ -120,11 +112,6 @@ while i<5:
 		if c[i][j] != 0:
 			check = c[i][j] + 1
 		while check < 6:
-			print(i)
-			print(j)
-			print(check)
-			print(rowcontents)
-			print(columncontents)
 			if check in rowcontents[i]:
 				check += 1
 				continue
@@ -142,9 +129,6 @@ while i<5:
 		if check == 1:
 			j+=1
 		else:
-			print("ASD")
-			
-			print("ASD2")
 			c[i][j] = 0
 			if j == 0:
 				j=4
